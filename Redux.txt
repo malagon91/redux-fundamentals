@@ -1,0 +1,73 @@
+PRIMER AVISTAMIENTO DE REDUX 
+
+
+Redux es un contenedor predecible del estado de aplicaciones JavaScript.
+Te ayuda a escribir aplicaciones que se comportan de manera consistente, corren en distintos ambientes 
+(cliente, servidor y nativo), y son fáciles de probar. Además de eso, provee una gran experiencia de 
+desarrollo, gracias a edición en vivo combinado con un depurador sobre una línea de tiempo.
+Puedes usar Redux combinado con React, o cual cualquier otra librería de vistas. Es muy pequeño (2kB) y 
+no tiene dependencias.
+
+El segundo principio de Redux es que el árbol de estado es de sólo lectura. 
+No puede modificar ni escribir en él. En su lugar, siempre que desee cambiar el estado, 
+debe enviar una acción.
+Una acción es un objeto JavaScript que describe el cambio. Al igual que el estado es la representación 
+mínima de los datos en su aplicación, la acción es la representación mínima del cambio a esos datos.
+
+Pure functions do not have any observable side effects, such as network or database calls. 
+The pure functions just calculate the new value. You can be confident that if you call the pure function 
+with the same set of arguments, you're going to get the same returned value. They are predictable.
+
+    // Pure function
+    function square(x){
+    return x * x;
+    }
+ 
+    // Pure function
+    function squareAll(items){
+    return items.map(square);
+    }
+
+On the opposite, impure functions may call the database or the network, they may have side effects, 
+they may operate on the DOM, and they may override the values that you pass to them.
+
+// Impure functions
+function square(x){
+  updateXInDatabase(x);
+  return x * x;
+}
+function squareAll(items){
+  for (let i = 0; i < items.length; i++) {
+    items[i] = square(items[i]);
+  }
+}
+
+There is something in common between all Redux applications. They have to implement the reducer: 
+a function that calculates the next state tree based on the previous state tree and the action being 
+dispatched.
+We are presenting a “complete” example in the code window below. Feel free to click around and explore! 
+We will be explaining what everything does during this course.
+
+The third and the last principle of Redux. To describe state mutations, you have to write a function 
+that takes the previous state of the app, the action being dispatched, and returns the next state of the app.
+ This function has to be pure. This function is called the Reducer.
+
+
+MIS NOTAS: 
+
+REdux es un contenedor de una app de js donde el los principales puntos son : 
+* Todos los datos deben provenir de una sola fuente de datos (store)
+* REdux debe contener toda la aplicacion en un solo objeto 
+
+-El objeto de redux no se puede modificar, para modificar el objeto se tiene que mandar una accion 
+
+-Para redux debemos usar solo funciones puras
+
+-El reducer es una funcion pura que toma el objeto anterior de nuestra app, la accion que realizara y devuelve
+el siguiente valor de la app
+
+
+
+
+npm i -S react-redux
+npm i -D redux-devtools
