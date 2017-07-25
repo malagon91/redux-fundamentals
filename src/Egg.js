@@ -1,0 +1,76 @@
+import React, { Component } from 'react';
+import {createStore} from 'redux';
+import ReactDOM from 'react-dom';
+//Primer ejemplo de redux, tengo un objeto que disminuye con el reducer store
+//Este ejempl lo hicieron en el curso pero no esta el reducer dentro de react sino que el reducer llama ala funcion 
+//del react-dom
+const counter = (state = 0, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1;
+    default:
+      return state;
+  }
+} 
+
+const Counter = ({
+  value,
+  onIncrement,
+  onDecrement
+}) => (
+  <div>
+    <h1>{value}</h1>
+    <button onClick={onIncrement}>+</button>
+    <button onClick={onDecrement}>-</button>
+  </div>
+);
+
+const store = createStore(counter);
+const render = () => {
+  ReactDOM.render(
+    <Counter
+      value={store.getState()}
+      onIncrement={() =>
+        store.dispatch({
+          type: 'INCREMENT'           
+        })            
+      }
+      onDecrement={() =>
+        store.dispatch({
+          type: 'DECREMENT'           
+        })            
+      }
+    />,
+    document.getElementById('root')
+  );
+};
+
+store.subscribe(render);
+render();
+
+/**
+ 
+ 
+export default class Egg extends Component {
+ render(){
+     return (
+          <div className="col-md-12 text-center">
+           <Counter
+                value={store.getState()}
+                onIncrement={() =>
+                    store.dispatch({
+                    type: 'INCREMENT'           
+                    })            
+                }
+                onDecrement={() =>
+                    store.dispatch({
+                    type: 'DECREMENT'           
+                    })            
+                }
+                />
+         </div>
+     )
+ }
+}*/

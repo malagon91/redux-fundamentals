@@ -11,38 +11,31 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <script src="https://wzrd.in/standalone/expect@latest"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <!-- Agregue estas listas para que react funcion desde el include en el script no es necesario para las 
+    apps porque lo estoy importando con npm -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.6.0/redux.js"></script>
 
     <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <title>React App</title>
+     <script src="https://wzrd.in/standalone/deep-freeze@latest"></script>
+    <script  src="script.js" type = "text/babel"></script>
   </head>
   <body>
+    
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <hr/>
+    <h2>Outer react</h2>
+     
+    <div id="egghead"></div>
     <script id="jsbin-javascript">
 /*
  * Open the console tab
@@ -87,8 +80,79 @@ expect(
   counter(undefined, {})
 ).toEqual(0);
 
-console.log('Tests passed!');
+console.log('First Tests passed!');
 
 </script>
+
+<script id="jsbin-javascript">
+/*
+ * Open the console to see
+ * that all tests have passed.
+ * 
+ * Agregamos esto para revisar como funcionan operadores de arrary que podemos usar 
+ * debiso a que algunos no los podemos usar porque las funciones no son puras 
+ */
+
+const addCounter = (list) => {
+  return [...list, 0];
+};
+
+const removeCounter = (list, index) => {
+  return [
+    ...list.slice(0, index),
+    ...list.slice(index + 1)
+  ];
+};
+
+const incrementCounter = (list, index) => {
+  return [
+    ...list.slice(0, index),
+    list[index] + 1,
+    ...list.slice(index + 1)
+  ];
+};
+
+const testAddCounter = () => {
+  const listBefore = [];
+  const listAfter = [0];
+  
+  deepFreeze(listBefore);
+  
+  expect(
+    addCounter(listBefore)
+  ).toEqual(listAfter);
+};
+
+const testRemoveCounter = () => {
+  const listBefore = [0, 10, 20];
+  const listAfter = [0, 20];
+  
+  deepFreeze(listBefore);
+  
+  expect(
+    removeCounter(listBefore, 1)
+  ).toEqual(listAfter);
+};
+
+const testIncrementCounter = () => {
+  const listBefore = [0, 10, 20];
+  const listAfter = [0, 11, 20];
+  
+  deepFreeze(listBefore);
+  
+  expect(
+    incrementCounter(listBefore, 1)
+  ).toEqual(listAfter);
+};
+
+testAddCounter();
+testRemoveCounter();
+testIncrementCounter();
+
+console.log('Seconds tests passed.');
+</script>
+ <script type="text/babel">
+      console.log('test');
+    </script>
   </body>
 </html>

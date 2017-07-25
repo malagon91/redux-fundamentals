@@ -2,7 +2,9 @@
   "name": "redux-fun",
   "version": "0.1.0",
   "private": true,
+  "plugins": ["transform-object-rest-spread"],
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "react-scripts": "1.0.10"
   },
   "dependencies": {

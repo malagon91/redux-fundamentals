@@ -52,6 +52,18 @@ The third and the last principle of Redux. To describe state mutations, you have
 that takes the previous state of the app, the action being dispatched, and returns the next state of the app.
  This function has to be pure. This function is called the Reducer.
 
+Los 3 metodos de los stores en redux
+The first method of this store is called "getState". It retrieves the current state of the Redux store. If we were on 
+this, we're going to see 0 because this is the initial state of our application.
+
+The second and the most commonly used store method is called "dispatch". It lets you dispatch actions to change the 
+state of your application. If we log this store state after dispatch, we're going to see that it has changed.
+
+Of course, always log into the console gets boring, so we're actually going to render something to the body with the 
+help of the third Redux store method, called subscribe. It lets you register a callback that the Redux store will call 
+any time an action has been dispatched, so that you can update the UI of your application. It will reflect the current 
+application state.
+
 
 MIS NOTAS: 
 
@@ -65,6 +77,21 @@ REdux es un contenedor de una app de js donde el los principales puntos son :
 
 -El reducer es una funcion pura que toma el objeto anterior de nuestra app, la accion que realizara y devuelve
 el siguiente valor de la app
+
+-en redux no podemos usar metodo mutables (impuros) por eso tengo que ver nuevos metodos para manejar el array 
+por ejemplo para eliminar un elemento de un array se usa splice pero este metodo no se puede usar en redux porque es 
+mutable 
+
+ -- Otras de las funciones que podemos usar en redux e Object.assign que funciona bien pero solo es entendida por ES6
+ por los navegadores viejos no la entenderan, mismo problema que con el proyecto en NJSFDA
+
+--El proyecto empezo a tomar forma pero fuera de react he revisado que se pueden combinar reducers y asi tener un objeto
+pero de diferentes fuentes ejemplo :
+const { combineReducers } = Redux;
+const todoApp = combineReducers({
+  todos,
+  visibilityFilter
+});
 
 
 
