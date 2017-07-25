@@ -12,6 +12,7 @@ class App extends Component {
    this.store = createStore(this.counter);
    console.log(this.store.getState());
    this.update = this.update.bind(this);
+   this.decrement = this.decrement.bind(this);
    this.store.subscribe(this.renderCount.bind(this));
   }
 
@@ -30,6 +31,13 @@ update(){
     type: 'INCREMENT'
   })
 }
+
+decrement(){
+  this.store.dispatch({
+    type: 'DECREMENT'
+  })
+}
+
 renderCount(){
    this.setState({
       count: this.store.getState()
@@ -41,7 +49,7 @@ renderCount(){
       <div className="col-md-12 text-center">
       <hr/>
       <a className="btn btn-primary" onClick={this.update}>Add</a>
-      <a className="btn btn-primary" onClick={this.update}>Less</a>
+      <a className="btn btn-primary" onClick={this.decrement}>Less</a>
       <h1>{this.store.getState()}</h1>
       </div>
     );
