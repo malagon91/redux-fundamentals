@@ -1,5 +1,4 @@
 'use strict';
-console.log('test');
 const { Component } = React;
 const { createStore } = Redux;
 const todo = (state, action) => {
@@ -14,10 +13,10 @@ const todo = (state, action) => {
       if (state.id !== action.id) {
         return state;
       }
-
-      return [...state,
-       { completed: !state.completed
-      }];
+console.log(state)
+      return {...state,
+         completed: !state.completed
+      };
     default:
       return state;
   }
@@ -59,9 +58,48 @@ const todoApp = combineReducers({
 
 const store = createStore(todoApp);
 
+const FilterLink =({
+      filter,children
+}) =>{
+      return (
+        <a href="#"
+        onClick={ (e) =>{
+          e.preventDefault();
+          store.dispatch({
+            type: 'SET_VISIBILITY_FILTER',
+            filter
+          })
+        }}
+        >{children}</a>
+      )
+};
+//Video 19
+
+const getVisibleTodos = (
+  todos,
+  filter
+) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos;
+    case 'SHOW_COMPLETED':
+      return todos.filter(
+        t => t.completed
+      );
+    case 'SHOW_ACTIVE':
+      return todos.filter(
+        t => !t.completed
+      );
+  }
+}
+
 let nextTodoId = 0;
 class TodoApp extends Component {
   render() {
+    const visibleTodos = getVisibleTodos(
+      this.props.todos,
+      this.props.visibilityFilter
+    );
     return (
       <div>
         <input ref={node => {
@@ -79,11 +117,34 @@ class TodoApp extends Component {
         </button>
         <ul>
           {this.props.todos.map(todo =>
-            <li key={todo.id}>
-              {todo.text}
+            <li key={todo.id}
+            onClick ={ () =>{
+              store.dispatch({
+                type: 'TOGGLE_TODO',
+                id: todo.id
+              });
+            }} style={{
+              textDecoration: todo.completed ? 'line-through' : 'none'
+            }}>
+              {todo.text}-{todo.id}
             </li>
           )}
         </ul>
+        <p>
+          Show: 
+          {' '}
+          <FilterLink filter='SHOW_ALL'>
+            All
+          </FilterLink>
+          {' '}
+          <FilterLink filter='SHOW_ACTIVE'>
+            Active
+          </FilterLink>
+          {' '}
+          <FilterLink filter='SHOW_COMPLETED'>
+            Completed
+          </FilterLink>
+        </p>
       </div>
     );
   }
