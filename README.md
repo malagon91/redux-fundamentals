@@ -1,2 +1,1 @@
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 In this example I to create a new react app and starting to use redux in react app, that example comming from Egghead course [Link](https://egghead.io/courses/getting-started-with-redux)
