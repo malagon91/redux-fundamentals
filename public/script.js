@@ -13,9 +13,9 @@ const todo = (state, action) => {
       if (state.id !== action.id) {
         return state;
       }
-console.log(state)
-      return {...state,
-         completed: !state.completed
+      return {
+        ...state,
+        completed: !state.completed
       };
     default:
       return state;
@@ -50,27 +50,64 @@ const visibilityFilter = (
   }
 };
 
-const { combineReducers } = Redux;
-const todoApp = combineReducers({
-  todos,
-  visibilityFilter
-});
-const FilterLink =({
-      filter,children
-}) =>{
-      return (
-        <a href="#"
-        onClick={ (e) =>{
-          e.preventDefault();
+const Link = ({
+  active,
+  children,
+  onClick
+}) => {
+  if (active) {
+    return <span>{children}</span>;
+  }
+
+  return (
+    <a href='#'
+       onClick={e => {
+         e.preventDefault();
+         onClick();
+       }}
+    >
+      {children}
+    </a>
+  );
+};
+
+class FilterLink extends Component {
+  componentDidMount() {
+    const { store } = this.props;
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    );//this function force to update render method 
+  }
+  
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+  
+  render() {
+    const props = this.props;
+    const { store } = props;
+    const state = store.getState();
+    
+    return (
+      <Link
+        active={
+          props.filter ===
+          state.visibilityFilter
+        }
+        onClick={() =>
           store.dispatch({
             type: 'SET_VISIBILITY_FILTER',
-            filter
+            filter: props.filter
           })
-        }}
-        >{children}</a>
-      )
-};
+        }
+      >
+        {props.children}
+      </Link>
+    );
+  }
+}
 //Video 19
+let nextTodoId = 0;
 
 const AddTodo = ({ store }) => {
   let input;
@@ -126,6 +163,24 @@ const TodoList = ({
       />
     )}
   </ul>
+);
+
+const Todo = ({
+  onClick,
+  completed,
+  text
+}) => (
+  <li
+    onClick={onClick}
+    style={{
+      textDecoration:
+        completed ?
+          'line-through' :
+          'none'
+    }}
+  >
+    {text}
+  </li>
 );
 
 class VisibleTodoList extends Component {
@@ -191,18 +246,25 @@ const Footer = ({ store }) => (
   </p>
 );
 
-let nextTodoId = 0;
-const TodoApp = ({store}) =>{
-      <div>
-       <AddTodo store={store} />
-      <VisibleTodoList store={store} />
-       <Footer store={store} />
-      </div>
-  }
 
-  ReactDOM.render(
-    <TodoApp store = {createStore(todoApp)}/>,
-    document.getElementById('egghead')
-  );
+
+const TodoApp = ({ store }) => (
+  <div>
+    <AddTodo store={store} />
+    <VisibleTodoList store={store} />
+    <Footer store={store} />
+  </div>
+)
+
+const { combineReducers } = Redux;
+const todoApp = combineReducers({
+  todos,
+  visibilityFilter
+});
+
+ReactDOM.render(
+  <TodoApp store={createStore(todoApp)} />,
+  document.getElementById('egghead')
+);
 
 
